@@ -1,5 +1,6 @@
 package com.futuereh.dronefeeder.persistence.daos;
 
+import com.futuereh.dronefeeder.application.contracts.VideoPersistence;
 import com.futuereh.dronefeeder.persistence.repositories.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
  * 
  */
 @Component
-public class VideoDao {
+public class VideoDao implements VideoPersistence {
   
   @Autowired
   private VideoRepository videoRepository;
