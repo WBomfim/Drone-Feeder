@@ -19,39 +19,9 @@ public class ClientController {
   private ClientService clientService;
 
   /**
-   * Rota para o cliente fazer o pedido de entrega.
+   * Rota para fazer o cadastro de um cliente.
    * 
    */
-  @PostMapping("/pedido")
-
-  /**
-   * Rota para o cliente listar os pedidos de entrega.
-   * 
-   */
-  @GetMapping("/pedido/list")
-
-  /**
-   * Rota para o cliente visualizar um pedido de entrega.
-   * 
-   */
-  @GetMapping("/pedido/{id}")
-
-  /**
-   * Rota para o cliente visualizar o video de uma entrega.
-   * 
-   */
-  @GetMapping("/pedido/video/{id}")
-
-  /**
-   * Rota para o cliente alterar um pedido de entrega.
-   * 
-   */
-  @PostMapping("/pedido/{id}")
-
-  /**
-   * Rota para o cliente cancelar um pedido de entrega.
-   * 
-   */
-  @DeleteMapping("/pedido/{id}")
+  @PostMapping("/")
   
 }

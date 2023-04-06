@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 
  */
 @RestController
-@RequestMapping("/drone")
+@RequestMapping("/drone/delivery")
 public class DroneController {
 
   @Autowired
@@ -21,18 +21,18 @@ public class DroneController {
    * Rota que simula o drone recebendo o pedido de entrega.
    * 
    */
-  @GetMapping("/delivery/start")
+  @GetMapping("/start")
 
   /**
    * Rota para o drone informar o inicio da entrega.
    * 
    */
-  @PostMapping("/delivery/start/{id}")
+  @PostMapping("/start/{id}")
 
   /**
    * Rota para o drone informar o fim da entrega.
    * 
    */
-  @PostMapping("/delivery/finish/{id}")
+  @PostMapping("/finish/{id}")
   
 }

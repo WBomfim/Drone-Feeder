@@ -18,6 +18,10 @@ public class LoginController {
   @Autowired
   private LoginService loginService;
 
+  /**
+   * Rota para fazer o login de um cliente.
+   * 
+   */
   @PostMapping("/")
   
 }
