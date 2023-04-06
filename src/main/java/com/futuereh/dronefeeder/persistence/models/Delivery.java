@@ -1,96 +1,108 @@
 package com.futuereh.dronefeeder.persistence.models;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
- * Delivery Model.
+ * Deliveries Model.
  *
  */
 @Entity
-public class Delivery {
+@Table(name = "deliveries")
+public class Delivery extends WaitingList {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
+  @ManyToOne
+  @JoinColumn(name = "drone_id")
+  private Drone droneId;
 
-  private LocalDateTime dateTime;
+  @Column(name = "departure_date")
+  private LocalDateTime departureDate;
 
-  private String latitude;
+  @Column(name = "lat_withdrawal_address")
+  private String latWithdrawalAddress;
 
-  private String longitude;
+  @Column(name = "long_withdrawal_address")
+  private String longWithdrawalAddress;
 
-  private String videoUrl;
-  
-  private boolean delivered;
-  
-  private Long droneId;
+  @Column(name = "delivery_date")
+  private String deliveryDate;
 
-  public Delivery() {}
+  @Column(name = "lat_delivery_address")
+  private String latDeliveryAddress;
 
-  public Delivery(LocalDateTime dateTime, String latitude, String longitude,
-      String videoUrl, boolean delivered, Long droneId) {
-    this.dateTime = dateTime;
-    this.latitude = latitude;
-    this.longitude = longitude;
-    this.videoUrl = videoUrl;
-    this.delivered = delivered;
-    this.droneId = droneId;
-  }
+  @Column(name = "long_delivery_address")
+  private String longDeliveryAddress;
 
-  public LocalDateTime getDateTime() {
-    return dateTime;
-  }
+  @ManyToOne
+  @JoinColumn(name = "video_id")
+  private Video videoId;
 
-  public void setDateTime(LocalDateTime dateTime) {
-    this.dateTime = dateTime;
-  }
-
-  public String getLatitude() {
-    return latitude;
-  }
-
-  public void setLatitude(String latitude) {
-    this.latitude = latitude;
-  }
-
-  public String getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(String longitude) {
-    this.longitude = longitude;
-  }
-
-  public String getVideoUrl() {
-    return videoUrl;
-  }
-
-  public void setVideoUrl(String videoUrl) {
-    this.videoUrl = videoUrl;
-  }
-
-  public boolean isDelivered() {
-    return delivered;
-  }
-
-  public void setDelivered(boolean delivered) {
-    this.delivered = delivered;
-  }
-
-  public Long getDroneId() {
+  public Drone getDroneId() {
     return droneId;
   }
 
-  public void setDroneId(Long droneId) {
+  public void setDroneId(Drone droneId) {
     this.droneId = droneId;
   }
 
-  public Long getId() {
-    return id;
+  public LocalDateTime getDepartureDate() {
+    return departureDate;
+  }
+
+  public void setDepartureDate(LocalDateTime departureDate) {
+    this.departureDate = departureDate;
+  }
+
+  public String getLatWithdrawalAddress() {
+    return latWithdrawalAddress;
+  }
+
+  public void setLatWithdrawalAddress(String latWithdrawalAddress) {
+    this.latWithdrawalAddress = latWithdrawalAddress;
+  }
+
+  public String getLongWithdrawalAddress() {
+    return longWithdrawalAddress;
+  }
+
+  public void setLongWithdrawalAddress(String longWithdrawalAddress) {
+    this.longWithdrawalAddress = longWithdrawalAddress;
+  }
+
+  public String getDeliveryDate() {
+    return deliveryDate;
+  }
+
+  public void setDeliveryDate(String deliveryDate) {
+    this.deliveryDate = deliveryDate;
+  }
+
+  public String getLatDeliveryAddress() {
+    return latDeliveryAddress;
+  }
+
+  public void setLatDeliveryAddress(String latDeliveryAddress) {
+    this.latDeliveryAddress = latDeliveryAddress;
+  }
+
+  public String getLongDeliveryAddress() {
+    return longDeliveryAddress;
+  }
+
+  public void setLongDeliveryAddress(String longDeliveryAddress) {
+    this.longDeliveryAddress = longDeliveryAddress;
+  }
+
+  public Video getVideoId() {
+    return videoId;
+  }
+
+  public void setVideoId(Video videoId) {
+    this.videoId = videoId;
   }
 
 }
