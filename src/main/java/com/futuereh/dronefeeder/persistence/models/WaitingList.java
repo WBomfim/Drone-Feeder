@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class WaitingList {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @ManyToOne

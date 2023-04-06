@@ -16,7 +16,7 @@ import javax.persistence.Table;
 public class Drone {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column

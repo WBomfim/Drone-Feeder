@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  * Class HendleExceptions.
  * 
  */
-@ControllerAdvice
+/* @ControllerAdvice
 public class HendleExceptions {
 
   @ExceptionHandler()
@@ -43,4 +43,4 @@ public class HendleExceptions {
         .body(new DataError(exception.getMessage()));
   }
 
-}
+} */
