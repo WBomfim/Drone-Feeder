@@ -13,6 +13,6 @@ import org.springframework.stereotype.Component;
 public class ClientDao implements ClientPersistence {
 
   @Autowired
-  private ClientPersistence clientRepository;
+  private ClientRepository clientRepository;
   
 }
