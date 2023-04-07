@@ -1,6 +1,8 @@
 package com.futuereh.dronefeeder.presentation.controllers;
 
+import com.futuereh.dronefeeder.application.results.LoginResponse;
 import com.futuereh.dronefeeder.application.services.LoginService;
+import com.futuereh.dronefeeder.persistence.models.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +24,9 @@ public class LoginController {
    * Rota para fazer o login de um cliente.
    * 
    */
-  @PostMapping("/")
+  @PostMapping
+  public LoginResponse login(@RequestBody Client client) {
+    return loginService.login(client);
+  }
   
 }

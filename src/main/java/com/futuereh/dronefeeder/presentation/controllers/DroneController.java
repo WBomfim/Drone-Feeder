@@ -21,18 +21,18 @@ public class DroneController {
    * Rota que simula o drone recebendo o pedido de entrega.
    * 
    */
-  @GetMapping("/start")
+  /* @GetMapping("/start") */
 
   /**
    * Rota para o drone informar o inicio da entrega.
    * 
    */
-  @PostMapping("/start/{id}")
+  /* @PostMapping("/start/{id}") */
 
   /**
    * Rota para o drone informar o fim da entrega.
    * 
    */
-  @PostMapping("/finish/{id}")
+  /* @PostMapping("/finish/{id}") */
   
 }

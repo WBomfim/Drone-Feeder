@@ -16,10 +16,10 @@ import javax.persistence.Table;
 public class Client {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @Column
+  @Column(unique = true)
   private String name;
 
   @Column

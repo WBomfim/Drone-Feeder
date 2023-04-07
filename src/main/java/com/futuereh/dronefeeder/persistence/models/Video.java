@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Video {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @Column
