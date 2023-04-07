@@ -53,8 +53,10 @@ public class DeliveryService {
       throw new IllegalArgumentException("Client_id is required");
     }
 
-    if (savedDeliveryDto.getWithdrawalAddress().isEmpty()
+    if (savedDeliveryDto.getWithdrawalAddress() == null
         || savedDeliveryDto.getWithdrawalAddress().isEmpty()
+        || savedDeliveryDto.getDeliveryAddress() == null
+        || savedDeliveryDto.getDeliveryAddress().isEmpty()
     ) {
       throw new IllegalArgumentException("Adresses is required");
     }
