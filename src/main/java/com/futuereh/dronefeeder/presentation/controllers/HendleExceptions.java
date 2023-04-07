@@ -1,6 +1,7 @@
 package com.futuereh.dronefeeder.presentation.controllers;
 
 import com.futuereh.dronefeeder.presentation.exceptions.DataError;
+import com.futuereh.dronefeeder.presentation.exceptions.UnauthorizedLogin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -25,11 +26,11 @@ public class HendleExceptions {
         .body(new DataError(exception.getMessage()));
   }
 
-  /* @ExceptionHandler()
+  @ExceptionHandler(UnauthorizedLogin.class)
   public ResponseEntity<DataError> unauthorized(RuntimeException exception) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
         .body(new DataError(exception.getMessage()));
-  } */
+  }
 
   /* @ExceptionHandler()
   public ResponseEntity<DataError> notFound(RuntimeException exception) {

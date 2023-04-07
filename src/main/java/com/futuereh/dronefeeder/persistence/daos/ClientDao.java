@@ -21,4 +21,8 @@ public class ClientDao implements ClientPersistence {
     return;
   }
 
+  public Client getClientByName(String name) {
+    return clientRepository.findByName(name);
+  }
+
 }
