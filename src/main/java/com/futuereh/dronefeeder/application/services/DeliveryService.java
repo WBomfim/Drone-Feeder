@@ -15,6 +15,8 @@ import com.futuereh.dronefeeder.persistence.models.Drone;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +92,31 @@ public class DeliveryService {
 
     deliveryDao.saveDelivery(delivery);
     return new MessageResult("Order received successfully");
+  }
+
+  /**
+   * Method to get all deliveries by client.
+   * 
+   */
+  public List<Delivery> getDeliveriesByClient(int clientId) {
+    Client client = clientDao.getClientById(clientId)
+        .orElseThrow(() -> new NotFoundException("Client not found"));
+
+    List<Delivery> deliveries = deliveryDao.getDeliveriesByClient(client);
+
+    List<WaitingList> waitingLists = waitingListDao.getWaitingListByClient(client);
+    for (WaitingList waitingList : waitingLists) {
+      Delivery delivery = new Delivery();
+      delivery.setId(waitingList.getId());
+      delivery.setClientId(waitingList.getClientId());
+      delivery.setRequestDate(waitingList.getRequestDate());
+      delivery.setWithdrawalAddress(waitingList.getWithdrawalAddress());
+      delivery.setDeliveryAddress(waitingList.getDeliveryAddress());
+      delivery.setStatus(waitingList.getStatus());
+      deliveries.add(delivery);
+    }
+
+    return deliveries;
   }
   
 }
