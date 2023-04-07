@@ -1,8 +1,11 @@
 package com.futuereh.dronefeeder.presentation.controllers;
 
-import com.futuereh.dronefeeder.application.services.ClientService;
+import com.futuereh.dronefeeder.application.dtos.SavedDeliveryDto;
+import com.futuereh.dronefeeder.application.results.MessageResult;
 import com.futuereh.dronefeeder.application.services.DeliveryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +24,10 @@ public class DeliveryController {
    * Rota para fazer o pedido de entrega.
    * 
    */
-  /* @PostMapping */
+  @PostMapping
+  public MessageResult saveDelivery(@RequestBody SavedDeliveryDto savedDeliveryDto) {
+    return deliveryService.saveDelivery(savedDeliveryDto);
+  }
 
   /**
    * Rota para listar os pedidos de entrega.
