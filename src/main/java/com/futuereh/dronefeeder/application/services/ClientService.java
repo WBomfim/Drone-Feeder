@@ -21,6 +21,15 @@ public class ClientService {
    * 
    */
   public MessageResult saveClient(Client client) {
+
+    if (client.getName() == null) {
+      throw new IllegalArgumentException("Name is required");
+    }
+
+    if (client.getPassword() == null) {
+      throw new IllegalArgumentException("Password is required");
+    }
+
     clientDao.saveClient(client);
     return new MessageResult("Client saved successfully");
   }
