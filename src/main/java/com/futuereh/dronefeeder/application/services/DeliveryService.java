@@ -65,8 +65,8 @@ public class DeliveryService {
       throw new IllegalArgumentException("Adresses is required");
     }
 
-    Optional<Client> clientOptional = clientDao.getClientById(savedDeliveryDto.getClientId());
-    Client client = clientOptional.orElseThrow(() -> new NotFoundException("Client not found"));
+    Client client = clientDao.getClientById(savedDeliveryDto.getClientId())
+        .orElseThrow(() -> new NotFoundException("Client not found"));
     
     Drone drone = droneDao.selectNextDrone();
 
