@@ -27,6 +27,10 @@ public class DeliveryDao implements DeliveryPersistence {
     deliveryRepository.save(delivery);
   }
 
+  public void deleteDelivery(Delivery delivery) {
+    deliveryRepository.delete(delivery);
+  }
+
   public List<Delivery> getDeliveriesByClient(Client clientId) {
     return deliveryRepository.getDeliveriesByClient(clientId);
   }

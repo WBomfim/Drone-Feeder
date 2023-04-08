@@ -7,6 +7,7 @@ import com.futuereh.dronefeeder.persistence.models.Delivery;
 import java.util.List;
 import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -89,6 +90,14 @@ public class DeliveryController {
    * Rota para cancelar um pedido de entrega.
    * 
    */
-  /* @DeleteMapping("/{id}") */
+  @DeleteMapping("/{id}/drone")
+  public MessageResult deleteDelivery(@PathVariable("id") Integer deliveryId) {
+    return deliveryService.deleteDelivery(deliveryId, true);
+  }
+
+  @DeleteMapping("/{id}")
+  public MessageResult deleteDeliveryWithoutDrone(@PathVariable("id") Integer deliveryId) {
+    return deliveryService.deleteDelivery(deliveryId, false);
+  }
 
 }

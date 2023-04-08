@@ -180,4 +180,33 @@ public class DeliveryService {
     return new MessageResult("Delivery updated successfully");
   }
 
+  /**
+   * Method to delete delivery.
+   * 
+   */
+  @Transactional
+  public MessageResult deleteDelivery(int deliveryId, Boolean presentDrone) {
+    if (presentDrone) {
+      Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
+          .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+      if (!delivery.getStatus().equals(DeliveryStatus.PENDING.toString())) {
+        throw new DeliveryUpdateNotAuthorized("Unauthorized cancel, order in progress of delivery");
+      }
+
+      deliveryDao.deleteDelivery(delivery);
+      return new MessageResult("Delivery deleted successfully");
+    }
+
+    WaitingList waitingList = waitingListDao.getWaitingListById(deliveryId)
+        .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+    if (!waitingList.getStatus().equals(DeliveryStatus.PENDING.toString())) {
+      throw new DeliveryUpdateNotAuthorized("Unauthorized cancel, order in progress of delivery");
+    }
+
+    waitingListDao.deleteDelivery(waitingList);
+    return new MessageResult("Delivery deleted successfully");
+  }
+
 }

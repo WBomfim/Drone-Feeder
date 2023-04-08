@@ -15,6 +15,8 @@ public interface DeliveryPersistence {
 
   void updateDelivery(Delivery delivery);
 
+  void deleteDelivery(Delivery delivery);
+
   List<Delivery> getDeliveriesByClient(Client client);
 
   Optional<Delivery> getDeliveryById(int deliveryId);

@@ -15,6 +15,8 @@ public interface WaitingListPersistence {
 
   void updateDelivery(WaitingList waitingList);
 
+  void deleteDelivery(WaitingList waitingList);
+
   List<WaitingList> getWaitingListByClient(Client client);
 
   Optional<WaitingList> getWaitingListById(int waitingListId);
