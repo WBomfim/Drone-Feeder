@@ -15,7 +15,6 @@ import com.futuereh.dronefeeder.persistence.models.Drone;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.transaction.Transactional;
@@ -118,5 +117,29 @@ public class DeliveryService {
 
     return deliveries;
   }
-  
+
+  /**
+   * Method to get delivery by id.
+   * 
+   */
+  public Delivery getDeliveryById(int deliveryId, Boolean presentDrone) {
+    if (presentDrone) {
+      return deliveryDao.getDeliveryById(deliveryId)
+          .orElseThrow(() -> new NotFoundException("Delivery not found"));
+    }
+
+    WaitingList waitingList = waitingListDao.getWaitingListById(deliveryId)
+        .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+    Delivery delivery = new Delivery();
+    delivery.setId(waitingList.getId());
+    delivery.setClientId(waitingList.getClientId());
+    delivery.setRequestDate(waitingList.getRequestDate());
+    delivery.setWithdrawalAddress(waitingList.getWithdrawalAddress());
+    delivery.setDeliveryAddress(waitingList.getDeliveryAddress());
+    delivery.setStatus(waitingList.getStatus());
+
+    return delivery;
+  }
+
 }
