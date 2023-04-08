@@ -2,6 +2,7 @@ package com.futuereh.dronefeeder.application.contracts;
 
 import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
+import com.futuereh.dronefeeder.persistence.models.Drone;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +18,10 @@ public interface DeliveryPersistence {
 
   void deleteDelivery(Delivery delivery);
 
+  Optional<Delivery> getDeliveryById(int deliveryId);
+
   List<Delivery> getDeliveriesByClient(Client client);
 
-  Optional<Delivery> getDeliveryById(int deliveryId);
-  
+  Delivery getNextDeliveryByDrone(Drone drone);
+
 }

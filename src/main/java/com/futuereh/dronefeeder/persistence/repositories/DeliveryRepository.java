@@ -2,6 +2,7 @@ package com.futuereh.dronefeeder.persistence.repositories;
 
 import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
+import com.futuereh.dronefeeder.persistence.models.Drone;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,8 @@ public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
   List<Delivery> getDeliveriesByClient(Client clientId);
 
   Optional<Delivery> getDeliveryById(int deliveryId);
+
+  @Query("SELECT d FROM Delivery d WHERE d.droneId = ?1 AND d.status = 'PENDING'")
+  Delivery getNextDeliveryByDrone(Drone drone);
 
 }
