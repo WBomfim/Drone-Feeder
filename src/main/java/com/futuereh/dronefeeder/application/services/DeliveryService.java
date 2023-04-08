@@ -12,9 +12,11 @@ import com.futuereh.dronefeeder.persistence.daos.WaitingListDao;
 import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
 import com.futuereh.dronefeeder.persistence.models.Drone;
+import com.futuereh.dronefeeder.persistence.models.Video;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
 import com.futuereh.dronefeeder.presentation.exceptions.DeliveryUpdateNotAuthorized;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -141,6 +143,20 @@ public class DeliveryService {
     delivery.setStatus(waitingList.getStatus());
 
     return delivery;
+  }
+
+  /**
+   * Method to get video by id.
+   * 
+   */
+  public Blob getDeliveryVideo(int deliveryId) {
+    Video video = videoDao.getVideoById(deliveryId);
+
+    if (video == null) {
+      throw new NotFoundException("Video not found");
+    }
+
+    return video.getVideo();
   }
 
   /**
