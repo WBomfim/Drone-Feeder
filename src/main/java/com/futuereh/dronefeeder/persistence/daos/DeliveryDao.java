@@ -23,6 +23,10 @@ public class DeliveryDao implements DeliveryPersistence {
     deliveryRepository.save(delivery);
   }
 
+  public void updateDelivery(Delivery delivery) {
+    deliveryRepository.save(delivery);
+  }
+
   public List<Delivery> getDeliveriesByClient(Client clientId) {
     return deliveryRepository.getDeliveriesByClient(clientId);
   }

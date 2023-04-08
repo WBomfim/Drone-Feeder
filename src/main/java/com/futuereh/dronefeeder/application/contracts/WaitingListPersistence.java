@@ -13,6 +13,8 @@ public interface WaitingListPersistence {
 
   void saveDelivery(WaitingList waitingList);
 
+  void updateDelivery(WaitingList waitingList);
+
   List<WaitingList> getWaitingListByClient(Client client);
 
   Optional<WaitingList> getWaitingListById(int waitingListId);

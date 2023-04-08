@@ -13,6 +13,8 @@ public interface DeliveryPersistence {
 
   void saveDelivery(Delivery delivery);
 
+  void updateDelivery(Delivery delivery);
+
   List<Delivery> getDeliveriesByClient(Client client);
 
   Optional<Delivery> getDeliveryById(int deliveryId);

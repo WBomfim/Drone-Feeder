@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,7 +69,21 @@ public class DeliveryController {
    * Rota para alterar um pedido de entrega.
    * 
    */
-  /* @PostMapping("/{id}") */
+  @PutMapping("/{id}/drone")
+  public MessageResult updateDeliveryWithDrone(
+      @PathVariable("id") Integer deliveryId,
+      @RequestBody SavedDeliveryDto savedDeliveryDto
+  ) {
+    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto, true);
+  }
+
+  @PutMapping("/{id}")
+  public MessageResult updateDeliveryWithoutDrone(
+      @PathVariable("id") Integer deliveryId,
+      @RequestBody SavedDeliveryDto savedDeliveryDto
+  ) {
+    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto, false);
+  }
 
   /**
    * Rota para cancelar um pedido de entrega.

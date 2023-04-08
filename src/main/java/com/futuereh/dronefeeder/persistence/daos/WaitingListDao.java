@@ -24,6 +24,11 @@ public class WaitingListDao implements WaitingListPersistence {
     return;
   }
 
+  public void updateDelivery(WaitingList waitingList) {
+    waitingListRepository.save(waitingList);
+    return;
+  }
+
   public List<WaitingList> getWaitingListByClient(Client client) {
     return waitingListRepository.getWaitingListByClient(client);
   }

@@ -13,6 +13,7 @@ import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
 import com.futuereh.dronefeeder.persistence.models.Drone;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
+import com.futuereh.dronefeeder.presentation.exceptions.DeliveryUpdateNotAuthorized;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -140,6 +141,43 @@ public class DeliveryService {
     delivery.setStatus(waitingList.getStatus());
 
     return delivery;
+  }
+
+  /**
+   * Method to update delivery.
+   * 
+   */
+  @Transactional
+  public MessageResult updateDelivery(
+      int deliveryId, SavedDeliveryDto savedDeliveryDto, Boolean presentDrone
+  ) {
+    if (presentDrone) {
+      Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
+          .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+      if (!delivery.getStatus().equals(DeliveryStatus.PENDING.toString())) {
+        throw new DeliveryUpdateNotAuthorized("Unauthorized update, order in progress of delivery");
+      }
+
+      delivery.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
+      delivery.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
+
+      deliveryDao.saveDelivery(delivery);
+      return new MessageResult("Delivery updated successfully");
+    }
+
+    WaitingList waitingList = waitingListDao.getWaitingListById(deliveryId)
+        .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+    if (!waitingList.getStatus().equals(DeliveryStatus.PENDING.toString())) {
+      throw new DeliveryUpdateNotAuthorized("Unauthorized update, order in progress of delivery");
+    }
+
+    waitingList.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
+    waitingList.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
+
+    waitingListDao.saveDelivery(waitingList);
+    return new MessageResult("Delivery updated successfully");
   }
 
 }
