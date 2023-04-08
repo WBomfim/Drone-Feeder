@@ -19,5 +19,7 @@ public interface WaitingListRepository extends JpaRepository<WaitingList, Intege
   List<WaitingList> getWaitingListByClient(Client client);
 
   Optional<WaitingList> getWaitingListById(int waitingListId);
+
+  List<WaitingList> findAll();
   
 }

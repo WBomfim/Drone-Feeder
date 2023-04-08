@@ -20,5 +20,7 @@ public interface WaitingListPersistence {
   List<WaitingList> getWaitingListByClient(Client client);
 
   Optional<WaitingList> getWaitingListById(int waitingListId);
+
+  WaitingList getNextDelivery();
   
 }

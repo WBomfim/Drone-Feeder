@@ -9,6 +9,7 @@ import com.futuereh.dronefeeder.persistence.daos.VideoDao;
 import com.futuereh.dronefeeder.persistence.daos.WaitingListDao;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
 import com.futuereh.dronefeeder.persistence.models.Drone;
+import com.futuereh.dronefeeder.persistence.models.WaitingList;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
@@ -83,6 +84,30 @@ public class DroneService {
 
     deliveryDao.updateDelivery(delivery);
     return new MessageResult("Delivery finished");
+  }
+
+  /**
+   * Method getNextDelivery.
+   * 
+   */
+  @Transactional
+  public Delivery getNextDelivery(int droneId) {
+    Drone drone = droneDao.getDroneById(droneId);
+
+    WaitingList waitingList = waitingListDao.getNextDelivery();
+
+    Delivery delivery = new Delivery();
+    delivery.setClientId(waitingList.getClientId());
+    delivery.setDroneId(drone);
+    delivery.setRequestDate(waitingList.getRequestDate());
+    delivery.setWithdrawalAddress(waitingList.getWithdrawalAddress());
+    delivery.setDeliveryAddress(waitingList.getDeliveryAddress());
+    delivery.setStatus(waitingList.getStatus());
+
+    deliveryDao.saveDelivery(delivery);
+    waitingListDao.deleteDelivery(waitingList);
+
+    return getNextDeliveryByDrone(droneId);
   }
 
 }

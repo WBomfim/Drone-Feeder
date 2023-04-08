@@ -55,5 +55,10 @@ public class DroneController {
   ) {
     return droneService.finishDelivery(deliveryId, updateDeliveryByDrone);
   }
+
+  @GetMapping("/next/{id}")
+  public Delivery getNextDelivery(@PathVariable("id") int droneId) {
+    return droneService.getNextDelivery(droneId);
+  }
   
 }
