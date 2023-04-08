@@ -3,6 +3,9 @@ package com.futuereh.dronefeeder.persistence.models;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,11 +16,31 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "deliveries")
-public class Delivery extends WaitingList {
+public class Delivery {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
+
+  @ManyToOne
+  @JoinColumn(name = "client_id")
+  private Client clientId;
 
   @ManyToOne
   @JoinColumn(name = "drone_id")
   private Drone droneId;
+
+  @Column(name = "request_date")
+  private LocalDateTime requestDate;
+
+  @Column(name = "withdrawal_address")
+  private String withdrawalAddress;
+
+  @Column(name = "delivery_address")
+  private String deliveryAddress;
+
+  @Column
+  private String status;
 
   @Column(name = "departure_date")
   private LocalDateTime departureDate;
@@ -29,7 +52,7 @@ public class Delivery extends WaitingList {
   private String longWithdrawalAddress;
 
   @Column(name = "delivery_date")
-  private String deliveryDate;
+  private LocalDateTime deliveryDate;
 
   @Column(name = "lat_delivery_address")
   private String latDeliveryAddress;
@@ -41,12 +64,60 @@ public class Delivery extends WaitingList {
   @JoinColumn(name = "video_id")
   private Video videoId;
 
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public Client getClientId() {
+    return clientId;
+  }
+
+  public void setClientId(Client clientId) {
+    this.clientId = clientId;
+  }
+
   public Drone getDroneId() {
     return droneId;
   }
 
   public void setDroneId(Drone droneId) {
     this.droneId = droneId;
+  }
+
+  public LocalDateTime getRequestDate() {
+    return requestDate;
+  }
+
+  public void setRequestDate(LocalDateTime requestDate) {
+    this.requestDate = requestDate;
+  }
+
+  public String getWithdrawalAddress() {
+    return withdrawalAddress;
+  }
+
+  public void setWithdrawalAddress(String withdrawalAddress) {
+    this.withdrawalAddress = withdrawalAddress;
+  }
+
+  public String getDeliveryAddress() {
+    return deliveryAddress;
+  }
+
+  public void setDeliveryAddress(String deliveryAddress) {
+    this.deliveryAddress = deliveryAddress;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public LocalDateTime getDepartureDate() {
@@ -73,11 +144,11 @@ public class Delivery extends WaitingList {
     this.longWithdrawalAddress = longWithdrawalAddress;
   }
 
-  public String getDeliveryDate() {
+  public LocalDateTime getDeliveryDate() {
     return deliveryDate;
   }
 
-  public void setDeliveryDate(String deliveryDate) {
+  public void setDeliveryDate(LocalDateTime deliveryDate) {
     this.deliveryDate = deliveryDate;
   }
 

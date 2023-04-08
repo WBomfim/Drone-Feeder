@@ -1,6 +1,7 @@
 package com.futuereh.dronefeeder.presentation.controllers;
 
 import com.futuereh.dronefeeder.presentation.exceptions.DataError;
+import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
 import com.futuereh.dronefeeder.presentation.exceptions.UnauthorizedLogin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class HendleExceptions {
 
-  /* @ExceptionHandler()
-  public ResponseEntity<DataError> noContent(RuntimeException exception) {
-    return ResponseEntity.status(HttpStatus.NO_CONTENT)
-        .body(new DataError(exception.getMessage()));
-  } */
-
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<DataError> badRequest(RuntimeException exception) {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -32,11 +27,11 @@ public class HendleExceptions {
         .body(new DataError(exception.getMessage()));
   }
 
-  /* @ExceptionHandler()
+  @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<DataError> notFound(RuntimeException exception) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND)
         .body(new DataError(exception.getMessage()));
-  } */
+  }
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<DataError> internalServerError(Exception exception) {
