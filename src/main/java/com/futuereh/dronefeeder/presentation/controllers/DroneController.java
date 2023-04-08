@@ -4,7 +4,6 @@ import com.futuereh.dronefeeder.application.dtos.UpdateDeliveryByDrone;
 import com.futuereh.dronefeeder.application.results.MessageResult;
 import com.futuereh.dronefeeder.application.services.DroneService;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +48,12 @@ public class DroneController {
    * Rota para o drone informar o fim da entrega.
    * 
    */
-  /* @PostMapping("/finish/{id}") */
+  @PostMapping("/finish/{id}")
+  public MessageResult finishDelivery(
+      @PathVariable("id") int deliveryId,
+      @RequestBody UpdateDeliveryByDrone updateDeliveryByDrone
+  ) {
+    return droneService.finishDelivery(deliveryId, updateDeliveryByDrone);
+  }
   
 }

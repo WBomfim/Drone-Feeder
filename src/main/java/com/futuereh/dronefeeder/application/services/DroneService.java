@@ -10,9 +10,8 @@ import com.futuereh.dronefeeder.persistence.daos.WaitingListDao;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
 import com.futuereh.dronefeeder.persistence.models.Drone;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
-
 import java.time.LocalDateTime;
-
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +54,7 @@ public class DroneService {
    * Method startDelivery.
    * 
    */
+  @Transactional
   public MessageResult startDelivery(int deliveryId, UpdateDeliveryByDrone updateDeliveryByDrone) {
     Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
         .orElseThrow(() -> new NotFoundException("Delivery not found"));
@@ -66,6 +66,23 @@ public class DroneService {
 
     deliveryDao.updateDelivery(delivery);
     return new MessageResult("Delivery started");
+  }
+
+  /**
+   * Method finishDelivery.
+   * 
+   */
+  public MessageResult finishDelivery(int deliveryId, UpdateDeliveryByDrone updateDeliveryByDrone) {
+    Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
+        .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+    delivery.setStatus(DeliveryStatus.DELIVERED.toString());
+    delivery.setDeliveryDate(LocalDateTime.now());
+    delivery.setLatDeliveryAddress(updateDeliveryByDrone.getLatitude());
+    delivery.setLongDeliveryAddress(updateDeliveryByDrone.getLongitude());
+
+    deliveryDao.updateDelivery(delivery);
+    return new MessageResult("Delivery finished");
   }
 
 }
