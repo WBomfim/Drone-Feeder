@@ -17,6 +17,10 @@ public class DroneDao implements DronePersistence {
   @Autowired
   private DroneRepository droneRepository;
 
+  public Drone getDroneById(int droneId) {
+    return droneRepository.getDroneById(droneId);
+  }
+
   /**
    * Select next drone.
    *

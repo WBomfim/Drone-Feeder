@@ -19,7 +19,6 @@ import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
 import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,8 +64,8 @@ public class DeliveryService {
       throw new IllegalArgumentException("Adresses is required");
     }
 
-    Optional<Client> clientOptional = clientDao.getClientById(savedDeliveryDto.getClientId());
-    Client client = clientOptional.orElseThrow(() -> new NotFoundException("Client not found"));
+    Client client = clientDao.getClientById(savedDeliveryDto.getClientId())
+        .orElseThrow(() -> new NotFoundException("Client not found"));
     
     Drone drone = droneDao.selectNextDrone();
 

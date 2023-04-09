@@ -42,4 +42,8 @@ public class WaitingListDao implements WaitingListPersistence {
     return waitingListRepository.getWaitingListById(waitingListId);
   }
 
+  public WaitingList getNextDelivery() {
+    return waitingListRepository.findAll().get(0);
+  }
+
 }

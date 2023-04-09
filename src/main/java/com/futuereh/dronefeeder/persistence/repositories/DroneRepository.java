@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DroneRepository extends JpaRepository<Drone, Integer> {
 
+  Drone getDroneById(int droneId);
+
   List<Drone> findByStatus(String status);
 
 }

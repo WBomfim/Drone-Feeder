@@ -8,6 +8,8 @@ import com.futuereh.dronefeeder.persistence.models.Video;
  */
 public interface VideoPersistence {
 
+  Video saveVideo(Video video);
+
   Video getVideoById(int videoId);
   
 }
