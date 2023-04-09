@@ -4,13 +4,17 @@ import com.futuereh.dronefeeder.application.dtos.UpdateDeliveryByDrone;
 import com.futuereh.dronefeeder.application.results.MessageResult;
 import com.futuereh.dronefeeder.application.services.DroneService;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
+import java.sql.Blob;
+import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Class DroneController.
@@ -59,6 +63,23 @@ public class DroneController {
   @GetMapping("/next/{id}")
   public Delivery getNextDelivery(@PathVariable("id") int droneId) {
     return droneService.getNextDelivery(droneId);
+  }
+
+  /**
+   * Rota para o drone enviar o video da entrega.
+   * 
+   */
+  @PostMapping("/video/{id}")
+  public MessageResult saveVideo(
+      @PathVariable("id") int deliveryId,
+      @RequestParam("file") MultipartFile file
+  ) throws Exception {
+    try {
+      Blob video = new SerialBlob(file.getBytes());
+      return droneService.saveVideo(deliveryId, video);
+    } catch (Exception e) {
+      throw new Exception();
+    }
   }
   
 }

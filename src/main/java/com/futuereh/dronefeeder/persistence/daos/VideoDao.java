@@ -16,6 +16,10 @@ public class VideoDao implements VideoPersistence {
   @Autowired
   private VideoRepository videoRepository;
 
+  public Video saveVideo(Video video) {
+    return videoRepository.save(video);
+  }
+
   public Video getVideoById(int videoId) {
     return videoRepository.getVideoById(videoId);
   }

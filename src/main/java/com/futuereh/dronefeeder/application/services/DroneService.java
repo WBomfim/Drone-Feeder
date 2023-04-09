@@ -9,8 +9,10 @@ import com.futuereh.dronefeeder.persistence.daos.VideoDao;
 import com.futuereh.dronefeeder.persistence.daos.WaitingListDao;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
 import com.futuereh.dronefeeder.persistence.models.Drone;
+import com.futuereh.dronefeeder.persistence.models.Video;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
 import com.futuereh.dronefeeder.presentation.exceptions.NotFoundException;
+import java.sql.Blob;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +110,25 @@ public class DroneService {
     waitingListDao.deleteDelivery(waitingList);
 
     return getNextDeliveryByDrone(droneId);
+  }
+
+  /**
+   * Method saveVideo.
+   * 
+   */
+  @Transactional
+  public MessageResult saveVideo(int deliveryId, Blob video) {
+    Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
+        .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+    Video newVideo = new Video();
+    newVideo.setVideo(video);
+
+    Video savedVideo = videoDao.saveVideo(newVideo);
+
+    delivery.setVideoId(savedVideo);
+    
+    return new MessageResult("Video saved");
   }
 
 }
