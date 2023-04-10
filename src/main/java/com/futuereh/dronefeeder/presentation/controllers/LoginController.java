@@ -21,7 +21,7 @@ public class LoginController {
   private LoginService loginService;
 
   /**
-   * Rota para fazer o login de um cliente.
+   * Route for logging in a customer.
    * 
    */
   @PostMapping

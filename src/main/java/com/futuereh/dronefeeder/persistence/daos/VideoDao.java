@@ -4,13 +4,13 @@ import com.futuereh.dronefeeder.application.contracts.VideoPersistence;
 import com.futuereh.dronefeeder.persistence.models.Video;
 import com.futuereh.dronefeeder.persistence.repositories.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Class VideoDao.
  * 
  */
-@Component
+@Repository
 public class VideoDao implements VideoPersistence {
   
   @Autowired
@@ -21,7 +21,7 @@ public class VideoDao implements VideoPersistence {
   }
 
   public Video getVideoById(int videoId) {
-    return videoRepository.getVideoById(videoId);
+    return videoRepository.findById(videoId);
   }
 
 }

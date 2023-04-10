@@ -31,7 +31,7 @@ public class DeliveryController {
   private DeliveryService deliveryService;
 
   /**
-   * Rota para fazer o pedido de entrega.
+   * Route to order delivery.
    * 
    */
   @PostMapping
@@ -40,30 +40,25 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para listar os pedidos de entrega.
+   * Route to list delivery orders by customer.
    * 
    */
   @GetMapping("/client/{client_id}")
-  public List<Delivery> getDeliveries(@PathVariable("client_id") Integer clientId) {
+  public List<Delivery> getDeliveriesByClient(@PathVariable("client_id") Integer clientId) {
     return deliveryService.getDeliveriesByClient(clientId);
   }
 
   /**
-   * Rota para visualizar um pedido de entrega.
+   * Route to view a delivery order.
    * 
    */
-  @GetMapping("/{id}/drone")
-  public Delivery getDeliveryWithDrone(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.getDeliveryById(deliveryId, true);
-  }
-
   @GetMapping("/{id}")
-  public Delivery getDeliveryWithoutDrone(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.getDeliveryById(deliveryId, false);
+  public Delivery getDeliveryById(@PathVariable("id") Integer deliveryId) {
+    return deliveryService.getDeliveryById(deliveryId);
   }
 
   /**
-   * Rota para visualizar o video de uma entrega.
+   * Route to view the video of a delivery.
    * 
    */
   @GetMapping("/video/{id}")
@@ -83,37 +78,24 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para alterar um pedido de entrega.
+   * Route to update a delivery order.
    * 
    */
-  @PutMapping("/{id}/drone")
-  public MessageResult updateDeliveryWithDrone(
-      @PathVariable("id") Integer deliveryId,
-      @RequestBody SavedDeliveryDto savedDeliveryDto
-  ) {
-    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto, true);
-  }
-
   @PutMapping("/{id}")
-  public MessageResult updateDeliveryWithoutDrone(
+  public MessageResult updateDelivery(
       @PathVariable("id") Integer deliveryId,
       @RequestBody SavedDeliveryDto savedDeliveryDto
   ) {
-    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto, false);
+    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto);
   }
 
   /**
-   * Rota para cancelar um pedido de entrega.
+   * Route to cancel a delivery order.
    * 
    */
-  @DeleteMapping("/{id}/drone")
-  public MessageResult deleteDelivery(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.deleteDelivery(deliveryId, true);
-  }
-
   @DeleteMapping("/{id}")
-  public MessageResult deleteDeliveryWithoutDrone(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.deleteDelivery(deliveryId, false);
+  public MessageResult deleteDelivery(@PathVariable("id") Integer deliveryId) {
+    return deliveryService.deleteDelivery(deliveryId);
   }
 
 }

@@ -1,6 +1,9 @@
 package com.futuereh.dronefeeder.application.contracts;
 
 import com.futuereh.dronefeeder.persistence.models.Drone;
+import java.util.List;
+import java.util.Optional;
+
 
 /**
  * Interface DronePersistence.
@@ -8,10 +11,10 @@ import com.futuereh.dronefeeder.persistence.models.Drone;
  */
 public interface DronePersistence {
 
-  Drone getDroneById(int droneId);
+  public void updateDrone(Drone drone);
 
-  public Drone selectNextDrone();
+  public Optional<Drone> getDroneById(int droneId);
 
-  public void updateDroneStatus(Drone drone);
-  
+  public List<Drone> getDronesByStatus(String status);
+
 }

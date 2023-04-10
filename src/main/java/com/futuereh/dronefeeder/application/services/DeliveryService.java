@@ -45,13 +45,7 @@ public class DeliveryService {
   @Autowired
   private VideoDao videoDao;
 
-  /**
-   * Method to save a delivery.
-   * 
-   */
-  @Transactional
-  public MessageResult saveDelivery(SavedDeliveryDto savedDeliveryDto) {
-
+  private void validateSavedDeliveryDto(SavedDeliveryDto savedDeliveryDto) {
     if (savedDeliveryDto.getClientId() == null) {
       throw new IllegalArgumentException("Client_id is required");
     }
@@ -61,27 +55,21 @@ public class DeliveryService {
         || savedDeliveryDto.getDeliveryAddress() == null
         || savedDeliveryDto.getDeliveryAddress().isEmpty()
     ) {
-      throw new IllegalArgumentException("Adresses is required");
+      throw new IllegalArgumentException("Invalid delivery data");
     }
+  }
 
+  private Drone selectNextDrone() {
+    List<Drone> drones = droneDao.getDronesByStatus(DroneStatus.AVAILABLE.toString());
+    if (drones.size() > 0) {
+      return drones.get(0);
+    }
+    return null;
+  }
+
+  private Delivery createDelivery(SavedDeliveryDto savedDeliveryDto, Drone drone) {
     Client client = clientDao.getClientById(savedDeliveryDto.getClientId())
         .orElseThrow(() -> new NotFoundException("Client not found"));
-    
-    Drone drone = droneDao.selectNextDrone();
-
-    if (drone == null) {
-      WaitingList waitingList = new WaitingList();
-      waitingList.setClientId(client);
-      waitingList.setRequestDate(LocalDateTime.now());
-      waitingList.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
-      waitingList.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
-      waitingList.setStatus(DeliveryStatus.PENDING.toString());
-      
-      waitingListDao.saveDelivery(waitingList);
-      return new MessageResult("Order received successfully");
-    }
-
-    drone.setStatus(DroneStatus.OPERATING.toString());
 
     Delivery delivery = new Delivery();
     delivery.setClientId(client);
@@ -91,7 +79,38 @@ public class DeliveryService {
     delivery.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
     delivery.setStatus(DeliveryStatus.PENDING.toString());
 
-    deliveryDao.saveDelivery(delivery);
+    return deliveryDao.saveDelivery(delivery);
+  }
+
+  private void addDeliveryToWaitingList(Delivery newDelivery) {
+    WaitingList waitingList = new WaitingList();
+    waitingList.setDeliveryId(newDelivery.getId());
+    waitingList.setWithdrawalAddress(newDelivery.getWithdrawalAddress());
+    waitingList.setDeliveryAddress(newDelivery.getDeliveryAddress());
+    waitingListDao.saveWaitingList(waitingList);
+  }
+
+  /**
+   * Method to save a delivery.
+   * 
+   */
+  @Transactional
+  public MessageResult saveDelivery(SavedDeliveryDto savedDeliveryDto) {
+
+    this.validateSavedDeliveryDto(savedDeliveryDto);
+    
+    Drone drone = this.selectNextDrone();
+
+    if (drone != null) {
+      drone.setStatus(DroneStatus.OPERATING.toString());
+      this.createDelivery(savedDeliveryDto, drone);
+      return new MessageResult("Order received successfully");
+    }
+
+    Delivery newDelivery = this.createDelivery(savedDeliveryDto, null);
+
+    this.addDeliveryToWaitingList(newDelivery);
+
     return new MessageResult("Order received successfully");
   }
 
@@ -101,47 +120,18 @@ public class DeliveryService {
    */
   public List<Delivery> getDeliveriesByClient(int clientId) {
     Client client = clientDao.getClientById(clientId)
-        .orElseThrow(() -> new NotFoundException("Client not found"));
+        .orElseThrow(() -> new NotFoundException("Client does not exist"));
 
-    List<Delivery> deliveries = deliveryDao.getDeliveriesByClient(client);
-
-    List<WaitingList> waitingLists = waitingListDao.getWaitingListByClient(client);
-    for (WaitingList waitingList : waitingLists) {
-      Delivery delivery = new Delivery();
-      delivery.setId(waitingList.getId());
-      delivery.setClientId(waitingList.getClientId());
-      delivery.setRequestDate(waitingList.getRequestDate());
-      delivery.setWithdrawalAddress(waitingList.getWithdrawalAddress());
-      delivery.setDeliveryAddress(waitingList.getDeliveryAddress());
-      delivery.setStatus(waitingList.getStatus());
-      deliveries.add(delivery);
-    }
-
-    return deliveries;
+    return deliveryDao.getDeliveriesByClient(client);
   }
 
   /**
    * Method to get delivery by id.
    * 
    */
-  public Delivery getDeliveryById(int deliveryId, Boolean presentDrone) {
-    if (presentDrone) {
-      return deliveryDao.getDeliveryById(deliveryId)
-          .orElseThrow(() -> new NotFoundException("Delivery not found"));
-    }
-
-    WaitingList waitingList = waitingListDao.getWaitingListById(deliveryId)
+  public Delivery getDeliveryById(int deliveryId) {
+    return deliveryDao.getDeliveryById(deliveryId)
         .orElseThrow(() -> new NotFoundException("Delivery not found"));
-
-    Delivery delivery = new Delivery();
-    delivery.setId(waitingList.getId());
-    delivery.setClientId(waitingList.getClientId());
-    delivery.setRequestDate(waitingList.getRequestDate());
-    delivery.setWithdrawalAddress(waitingList.getWithdrawalAddress());
-    delivery.setDeliveryAddress(waitingList.getDeliveryAddress());
-    delivery.setStatus(waitingList.getStatus());
-
-    return delivery;
   }
 
   /**
@@ -163,35 +153,26 @@ public class DeliveryService {
    * 
    */
   @Transactional
-  public MessageResult updateDelivery(
-      int deliveryId, SavedDeliveryDto savedDeliveryDto, Boolean presentDrone
-  ) {
-    if (presentDrone) {
-      Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
-          .orElseThrow(() -> new NotFoundException("Delivery not found"));
-
-      if (!delivery.getStatus().equals(DeliveryStatus.PENDING.toString())) {
-        throw new DeliveryUpdateNotAuthorized("Unauthorized update, order in progress of delivery");
-      }
-
-      delivery.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
-      delivery.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
-
-      deliveryDao.saveDelivery(delivery);
-      return new MessageResult("Delivery updated successfully");
-    }
-
-    WaitingList waitingList = waitingListDao.getWaitingListById(deliveryId)
+  public MessageResult updateDelivery(int deliveryId, SavedDeliveryDto savedDeliveryDto) {
+    Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
         .orElseThrow(() -> new NotFoundException("Delivery not found"));
 
-    if (!waitingList.getStatus().equals(DeliveryStatus.PENDING.toString())) {
+    if (!delivery.getStatus().equals(DeliveryStatus.PENDING.toString())) {
       throw new DeliveryUpdateNotAuthorized("Unauthorized update, order in progress of delivery");
     }
 
-    waitingList.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
-    waitingList.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
+    if (delivery.getDroneId() == null) {
+      WaitingList waitingList = waitingListDao.getWaitingListByDeliveryId(deliveryId)
+          .orElseThrow(() -> new NotFoundException("Delivery not found"));
 
-    waitingListDao.saveDelivery(waitingList);
+      waitingList.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
+      waitingList.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
+    }
+
+    delivery.setRequestDate(LocalDateTime.now());
+    delivery.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
+    delivery.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
+
     return new MessageResult("Delivery updated successfully");
   }
 
@@ -200,27 +181,22 @@ public class DeliveryService {
    * 
    */
   @Transactional
-  public MessageResult deleteDelivery(int deliveryId, Boolean presentDrone) {
-    if (presentDrone) {
-      Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
-          .orElseThrow(() -> new NotFoundException("Delivery not found"));
-
-      if (!delivery.getStatus().equals(DeliveryStatus.PENDING.toString())) {
-        throw new DeliveryUpdateNotAuthorized("Unauthorized cancel, order in progress of delivery");
-      }
-
-      deliveryDao.deleteDelivery(delivery);
-      return new MessageResult("Delivery deleted successfully");
-    }
-
-    WaitingList waitingList = waitingListDao.getWaitingListById(deliveryId)
+  public MessageResult deleteDelivery(int deliveryId) {
+    Delivery delivery = deliveryDao.getDeliveryById(deliveryId)
         .orElseThrow(() -> new NotFoundException("Delivery not found"));
 
-    if (!waitingList.getStatus().equals(DeliveryStatus.PENDING.toString())) {
+    if (!delivery.getStatus().equals(DeliveryStatus.PENDING.toString())) {
       throw new DeliveryUpdateNotAuthorized("Unauthorized cancel, order in progress of delivery");
     }
 
-    waitingListDao.deleteDelivery(waitingList);
+    if (delivery.getDroneId() == null) {
+      WaitingList waitingList = waitingListDao.getWaitingListByDeliveryId(deliveryId)
+          .orElseThrow(() -> new NotFoundException("Delivery not found"));
+
+      waitingListDao.deleteWaitingList(waitingList);
+    }
+
+    deliveryDao.deleteDelivery(delivery);
     return new MessageResult("Delivery deleted successfully");
   }
 

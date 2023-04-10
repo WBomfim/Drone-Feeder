@@ -11,7 +11,7 @@ public interface ClientPersistence {
 
   public void saveClient(Client client);
 
-  public Client getClientByName(String name);
+  public Optional<Client> getClientByName(String name);
 
   public Optional<Client> getClientById(int id);
   

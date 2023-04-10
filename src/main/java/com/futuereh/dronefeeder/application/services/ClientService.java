@@ -30,6 +30,12 @@ public class ClientService {
       throw new IllegalArgumentException("Password is required");
     }
 
+    Client clientFound = clientDao.getClientByName(client.getName()).orElse(null);
+
+    if (clientFound != null) {
+      throw new IllegalArgumentException("Client already exists");
+    }
+
     clientDao.saveClient(client);
     return new MessageResult("Client saved successfully");
   }

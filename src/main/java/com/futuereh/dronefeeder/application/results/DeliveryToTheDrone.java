@@ -1,35 +1,16 @@
-package com.futuereh.dronefeeder.persistence.models;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+package com.futuereh.dronefeeder.application.results;
 
 /**
- * WaitingList Model.
+ * Class DeliveryToTheDrone.
  * 
  */
-@Entity
-@Table(name = "waiting_list")
-public class WaitingList {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+public class DeliveryToTheDrone {
 
   private int deliveryId;
 
-  @Column(name = "withdrawal_address")
   private String withdrawalAddress;
 
-  @Column(name = "delivery_address")
   private String deliveryAddress;
-
-  public int getId() {
-    return id;
-  }
 
   public int getDeliveryId() {
     return deliveryId;

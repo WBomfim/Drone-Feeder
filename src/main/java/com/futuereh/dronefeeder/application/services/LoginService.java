@@ -22,7 +22,7 @@ public class LoginService {
    * 
    */
   public LoginResponse login(Client client) {
-    Client registeredCustomer = clientDao.getClientByName(client.getName());
+    Client registeredCustomer = clientDao.getClientByName(client.getName()).orElse(null);
 
     if (registeredCustomer == null) {
       throw new UnauthorizedLogin("Name invalid");

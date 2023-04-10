@@ -1,9 +1,9 @@
 package com.futuereh.dronefeeder.presentation.controllers;
 
-import com.futuereh.dronefeeder.application.dtos.UpdateDeliveryByDrone;
+import com.futuereh.dronefeeder.application.dtos.DroneUpdatesDeliveryDto;
+import com.futuereh.dronefeeder.application.results.DeliveryToTheDrone;
 import com.futuereh.dronefeeder.application.results.MessageResult;
 import com.futuereh.dronefeeder.application.services.DroneService;
-import com.futuereh.dronefeeder.persistence.models.Delivery;
 import java.sql.Blob;
 import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,45 +28,40 @@ public class DroneController {
   private DroneService droneService;
 
   /**
-   * Rota que simula o drone recebendo o pedido de entrega.
-   * 
-   */
-  @GetMapping("/start/{id}")
-  public Delivery getNextDeliveryByDrone(@PathVariable("id") int droneId) {
-    return droneService.getNextDeliveryByDrone(droneId);
-  }
-
-  /**
-   * Rota para o drone informar o inicio da entrega.
+   * Route for the drone to inform the beginning of the delivery.
    * 
    */
   @PostMapping("/start/{id}")
   public MessageResult startDelivery(
       @PathVariable("id") int deliveryId,
-      @RequestBody UpdateDeliveryByDrone updateDeliveryByDrone
+      @RequestBody DroneUpdatesDeliveryDto updateDeliveryByDrone
   ) {
     return droneService.startDelivery(deliveryId, updateDeliveryByDrone);
   }
 
   /**
-   * Rota para o drone informar o fim da entrega.
+   * Route for the drone to report the end of delivery.
    * 
    */
   @PostMapping("/finish/{id}")
   public MessageResult finishDelivery(
       @PathVariable("id") int deliveryId,
-      @RequestBody UpdateDeliveryByDrone updateDeliveryByDrone
+      @RequestBody DroneUpdatesDeliveryDto updateDeliveryByDrone
   ) {
     return droneService.finishDelivery(deliveryId, updateDeliveryByDrone);
   }
 
+  /**
+   * Route for the drone to pick up the next delivery.
+   * 
+   */
   @GetMapping("/next/{id}")
-  public Delivery getNextDelivery(@PathVariable("id") int droneId) {
+  public DeliveryToTheDrone getNextDelivery(@PathVariable("id") int droneId) {
     return droneService.getNextDelivery(droneId);
   }
 
   /**
-   * Rota para o drone enviar o video da entrega.
+   * Route for the drone to send the delivery video.
    * 
    */
   @PostMapping("/video/{id}")
