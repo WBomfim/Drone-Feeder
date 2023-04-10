@@ -11,10 +11,10 @@ import java.util.Optional;
  */
 public interface DronePersistence {
 
+  public void updateDrone(Drone drone);
+
   public Optional<Drone> getDroneById(int droneId);
 
   public List<Drone> getDronesByStatus(String status);
 
-  public void updateDroneStatus(Drone drone);
-  
 }

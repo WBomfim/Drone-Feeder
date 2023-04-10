@@ -6,7 +6,7 @@ package com.futuereh.dronefeeder.application.utils;
  */
 public enum DroneStatus {
   
-  WAITING,
+  AVAILABLE,
   OPERATING,
   
 }

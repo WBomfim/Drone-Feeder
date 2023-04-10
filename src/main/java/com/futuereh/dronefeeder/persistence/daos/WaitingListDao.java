@@ -3,6 +3,7 @@ package com.futuereh.dronefeeder.persistence.daos;
 import com.futuereh.dronefeeder.application.contracts.WaitingListPersistence;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
 import com.futuereh.dronefeeder.persistence.repositories.WaitingListRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,8 +37,8 @@ public class WaitingListDao implements WaitingListPersistence {
     return waitingListRepository.getByDeliveryId(deliveryId);
   }
 
-  public WaitingList getNextDelivery() {
-    return waitingListRepository.findAll().get(0);
+  public List<WaitingList> getAllWaitingList() {
+    return waitingListRepository.findAll();
   }
 
 }

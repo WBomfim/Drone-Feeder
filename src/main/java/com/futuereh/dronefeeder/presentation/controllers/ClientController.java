@@ -23,7 +23,7 @@ public class ClientController {
   private ClientService clientService;
 
   /**
-   * Rota para fazer o cadastro de um cliente.
+   * Route to register a customer.
    * 
    */
   @PostMapping

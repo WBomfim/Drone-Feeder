@@ -18,6 +18,18 @@ public class DroneDao implements DronePersistence {
   @Autowired
   private DroneRepository droneRepository;
 
+  /**
+   * Update drone status.
+   *
+   */
+  public void updateDrone(Drone drone) {
+    droneRepository.save(drone);
+  }
+
+  /**
+   * Select drone by id.
+   *
+   */
   public Optional<Drone> getDroneById(int droneId) {
     return droneRepository.findById(droneId);
   }
@@ -29,14 +41,6 @@ public class DroneDao implements DronePersistence {
   public List<Drone> getDronesByStatus(String status) {
     return droneRepository.findByStatus(status);
 
-  }
-
-  /**
-   * Update drone status.
-   *
-   */
-  public void updateDroneStatus(Drone drone) {
-    droneRepository.save(drone);
   }
 
 }

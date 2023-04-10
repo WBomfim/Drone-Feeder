@@ -60,7 +60,7 @@ public class DeliveryService {
   }
 
   private Drone selectNextDrone() {
-    List<Drone> drones = droneDao.getDronesByStatus(DroneStatus.WAITING.toString());
+    List<Drone> drones = droneDao.getDronesByStatus(DroneStatus.AVAILABLE.toString());
     if (drones.size() > 0) {
       return drones.get(0);
     }

@@ -4,7 +4,7 @@ package com.futuereh.dronefeeder.application.dtos;
  * Class UpdateDeliveryByDrone.
  * 
  */
-public class UpdateDeliveryByDrone {
+public class DroneUpdatesDeliveryDto {
 
   private String latitude;
 

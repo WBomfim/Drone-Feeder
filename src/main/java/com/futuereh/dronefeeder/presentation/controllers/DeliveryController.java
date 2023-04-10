@@ -31,7 +31,7 @@ public class DeliveryController {
   private DeliveryService deliveryService;
 
   /**
-   * Rota para fazer o pedido de entrega.
+   * Route to order delivery.
    * 
    */
   @PostMapping
@@ -40,7 +40,7 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para listar os pedidos de entrega.
+   * Route to list delivery orders by customer.
    * 
    */
   @GetMapping("/client/{client_id}")
@@ -49,7 +49,7 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para visualizar um pedido de entrega.
+   * Route to view a delivery order.
    * 
    */
   @GetMapping("/{id}")
@@ -58,7 +58,7 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para visualizar o video de uma entrega.
+   * Route to view the video of a delivery.
    * 
    */
   @GetMapping("/video/{id}")
@@ -78,7 +78,7 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para alterar um pedido de entrega.
+   * Route to update a delivery order.
    * 
    */
   @PutMapping("/{id}")
@@ -90,7 +90,7 @@ public class DeliveryController {
   }
 
   /**
-   * Rota para cancelar um pedido de entrega.
+   * Route to cancel a delivery order.
    * 
    */
   @DeleteMapping("/{id}")

@@ -39,9 +39,5 @@ public class DeliveryDao implements DeliveryPersistence {
   public List<Delivery> getDeliveriesByClient(Client clientId) {
     return deliveryRepository.getDeliveriesByClient(clientId);
   }
-
-  public Delivery getNextDeliveryByDrone(Drone drone) {
-    return deliveryRepository.getNextDeliveryByDrone(drone);
-  }
   
 }
