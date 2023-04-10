@@ -6,41 +6,29 @@ import com.futuereh.dronefeeder.persistence.repositories.DroneRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Class DroneDao.
  * 
  */
-@Component
+@Repository
 public class DroneDao implements DronePersistence {
   
   @Autowired
   private DroneRepository droneRepository;
 
-  /**
-   * Update drone status.
-   *
-   */
   public void updateDrone(Drone drone) {
     droneRepository.save(drone);
+    return;
   }
 
-  /**
-   * Select drone by id.
-   *
-   */
   public Optional<Drone> getDroneById(int droneId) {
     return droneRepository.findById(droneId);
   }
 
-  /**
-   * Select next drone.
-   *
-   */
   public List<Drone> getDronesByStatus(String status) {
     return droneRepository.findByStatus(status);
-
   }
 
 }

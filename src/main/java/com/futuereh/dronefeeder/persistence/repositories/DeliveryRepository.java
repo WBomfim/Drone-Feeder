@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 public interface DeliveryRepository extends JpaRepository<Delivery, Integer> {
 
   @Query("SELECT d FROM Delivery d WHERE d.clientId = ?1")
-  List<Delivery> getDeliveriesByClient(Client clientId);
+  List<Delivery> findByClient(Client clientId);
 
-  Optional<Delivery> getDeliveryById(int deliveryId);
+  Optional<Delivery> findById(int deliveryId);
 
 }

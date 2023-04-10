@@ -52,7 +52,6 @@ public class DroneService {
     delivery.setDeliveryDate(LocalDateTime.now());
     delivery.setLatDeliveryAddress(droneUpdatesDeliveryDto.getLatitude());
     delivery.setLongDeliveryAddress(droneUpdatesDeliveryDto.getLongitude());
-    deliveryDao.updateDelivery(delivery);
   }
 
   /**
@@ -72,6 +71,7 @@ public class DroneService {
    * Method finishDelivery.
    * 
    */
+  @Transactional
   public MessageResult finishDelivery(
       int deliveryId,
       DroneUpdatesDeliveryDto updateDeliveryByDrone
@@ -84,7 +84,7 @@ public class DroneService {
    * Method getNextDelivery.
    * 
    */
-  @Transactional
+  @Transactional(dontRollbackOn = NotFoundException.class)
   public DeliveryToTheDrone getNextDelivery(int droneId) {
     Drone drone = droneDao.getDroneById(droneId)
         .orElseThrow(() -> new NotFoundException("Drone not found"));
@@ -93,7 +93,6 @@ public class DroneService {
 
     if (allWaitingLists.isEmpty()) {
       drone.setStatus(DroneStatus.AVAILABLE.toString());
-      droneDao.updateDrone(drone);
       throw new NotFoundException("No deliveries available");
     }
 

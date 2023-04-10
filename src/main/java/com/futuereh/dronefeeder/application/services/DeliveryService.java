@@ -167,13 +167,11 @@ public class DeliveryService {
 
       waitingList.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
       waitingList.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
-      waitingListDao.updateWaitingList(waitingList);
     }
 
     delivery.setRequestDate(LocalDateTime.now());
     delivery.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
     delivery.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
-    deliveryDao.updateDelivery(delivery);
 
     return new MessageResult("Delivery updated successfully");
   }

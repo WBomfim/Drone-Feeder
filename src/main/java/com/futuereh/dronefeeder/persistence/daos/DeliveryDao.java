@@ -3,7 +3,6 @@ package com.futuereh.dronefeeder.persistence.daos;
 import com.futuereh.dronefeeder.application.contracts.DeliveryPersistence;
 import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
-import com.futuereh.dronefeeder.persistence.models.Drone;
 import com.futuereh.dronefeeder.persistence.repositories.DeliveryRepository;
 import java.util.List;
 import java.util.Optional;
@@ -33,11 +32,11 @@ public class DeliveryDao implements DeliveryPersistence {
   }
 
   public Optional<Delivery> getDeliveryById(int deliveryId) {
-    return deliveryRepository.getDeliveryById(deliveryId);
+    return deliveryRepository.findById(deliveryId);
   }
 
   public List<Delivery> getDeliveriesByClient(Client clientId) {
-    return deliveryRepository.getDeliveriesByClient(clientId);
+    return deliveryRepository.findByClient(clientId);
   }
   
 }

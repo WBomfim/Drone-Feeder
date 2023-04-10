@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public interface WaitingListRepository extends JpaRepository<WaitingList, Integer> {
 
   @Query("SELECT w FROM WaitingList w WHERE w.deliveryId = ?1")
-  Optional<WaitingList> getByDeliveryId(int deliveryId);
+  Optional<WaitingList> findByDeliveryId(int deliveryId);
 
   List<WaitingList> findAll();
   

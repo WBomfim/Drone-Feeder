@@ -7,6 +7,7 @@ package com.futuereh.dronefeeder.application.results;
 public class LoginResponse {
   
   private int id;
+  
   private String name;
 
   public LoginResponse(int id, String name) {

@@ -36,7 +36,7 @@ public class HendleExceptions {
   @ExceptionHandler(Exception.class)
   public ResponseEntity<DataError> internalServerError(Exception exception) {
     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(new DataError(exception.getMessage()));
+        .body(new DataError("Internal Server Error."));
   }
 
 }
