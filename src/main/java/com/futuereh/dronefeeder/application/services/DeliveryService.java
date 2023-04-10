@@ -45,6 +45,14 @@ public class DeliveryService {
   @Autowired
   private VideoDao videoDao;
 
+  private Drone selectNextDrone() {
+    List<Drone> drones = droneDao.getDronesByStatus(DroneStatus.WAITING.toString());
+    if (drones.size() > 0) {
+      return drones.get(0);
+    }
+    return null;
+  }
+
   /**
    * Method to save a delivery.
    * 
@@ -67,7 +75,7 @@ public class DeliveryService {
     Client client = clientDao.getClientById(savedDeliveryDto.getClientId())
         .orElseThrow(() -> new NotFoundException("Client not found"));
     
-    Drone drone = droneDao.selectNextDrone();
+    Drone drone = this.selectNextDrone();
 
     if (drone == null) {
       WaitingList waitingList = new WaitingList();

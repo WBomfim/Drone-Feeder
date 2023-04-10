@@ -4,6 +4,7 @@ import com.futuereh.dronefeeder.application.contracts.DronePersistence;
 import com.futuereh.dronefeeder.persistence.models.Drone;
 import com.futuereh.dronefeeder.persistence.repositories.DroneRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,20 +18,17 @@ public class DroneDao implements DronePersistence {
   @Autowired
   private DroneRepository droneRepository;
 
-  public Drone getDroneById(int droneId) {
-    return droneRepository.getDroneById(droneId);
+  public Optional<Drone> getDroneById(int droneId) {
+    return droneRepository.findById(droneId);
   }
 
   /**
    * Select next drone.
    *
    */
-  public Drone selectNextDrone() {
-    List<Drone> drones = droneRepository.findByStatus("waiting");
-    if (drones.size() > 0) {
-      return drones.get(0);
-    }
-    return null;
+  public List<Drone> getDronesByStatus(String status) {
+    return droneRepository.findByStatus(status);
+
   }
 
   /**

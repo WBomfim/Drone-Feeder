@@ -2,18 +2,19 @@ package com.futuereh.dronefeeder.persistence.repositories;
 
 import com.futuereh.dronefeeder.persistence.models.Drone;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 /**
  * Drone Repository.
  * 
  */
-@Repository
+@Component
 public interface DroneRepository extends JpaRepository<Drone, Integer> {
 
-  Drone getDroneById(int droneId);
+  public Optional<Drone> findById(int droneId);
 
-  List<Drone> findByStatus(String status);
+  public List<Drone> findByStatus(String status);
 
 }
