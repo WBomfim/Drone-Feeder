@@ -42,7 +42,8 @@ public class DroneService {
    * 
    */
   public Delivery getNextDeliveryByDrone(int droneId) {
-    Drone drone = droneDao.getDroneById(droneId);
+    Drone drone = droneDao.getDroneById(droneId)
+        .orElseThrow(() -> new NotFoundException("Drone not found"));
 
     Delivery delivery = deliveryDao.getNextDeliveryByDrone(drone);
 
@@ -92,9 +93,10 @@ public class DroneService {
    * Method getNextDelivery.
    * 
    */
-  @Transactional
+  /* @Transactional
   public Delivery getNextDelivery(int droneId) {
-    Drone drone = droneDao.getDroneById(droneId);
+    Drone drone = droneDao.getDroneById(droneId)
+        .orElseThrow(() -> new NotFoundException("Drone not found"));
 
     WaitingList waitingList = waitingListDao.getNextDelivery();
 
@@ -110,7 +112,7 @@ public class DroneService {
     waitingListDao.deleteDelivery(waitingList);
 
     return getNextDeliveryByDrone(droneId);
-  }
+  } */
 
   /**
    * Method saveVideo.

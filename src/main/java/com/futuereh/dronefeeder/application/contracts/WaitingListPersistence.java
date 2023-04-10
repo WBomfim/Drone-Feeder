@@ -1,8 +1,6 @@
 package com.futuereh.dronefeeder.application.contracts;
 
-import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.models.WaitingList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,15 +9,13 @@ import java.util.Optional;
  */
 public interface WaitingListPersistence {
 
-  void saveDelivery(WaitingList waitingList);
+  void saveWaitingList(WaitingList waitingList);
 
-  void updateDelivery(WaitingList waitingList);
+  void updateWaitingList(WaitingList waitingList);
 
-  void deleteDelivery(WaitingList waitingList);
+  void deleteWaitingList(WaitingList waitingList);
 
-  List<WaitingList> getWaitingListByClient(Client client);
-
-  Optional<WaitingList> getWaitingListById(int waitingListId);
+  Optional<WaitingList> getWaitingListByDeliveryId(int waitingListId);
 
   WaitingList getNextDelivery();
   

@@ -44,7 +44,7 @@ public class DeliveryController {
    * 
    */
   @GetMapping("/client/{client_id}")
-  public List<Delivery> getDeliveries(@PathVariable("client_id") Integer clientId) {
+  public List<Delivery> getDeliveriesByClient(@PathVariable("client_id") Integer clientId) {
     return deliveryService.getDeliveriesByClient(clientId);
   }
 
@@ -52,14 +52,9 @@ public class DeliveryController {
    * Rota para visualizar um pedido de entrega.
    * 
    */
-  @GetMapping("/{id}/drone")
-  public Delivery getDeliveryWithDrone(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.getDeliveryById(deliveryId, true);
-  }
-
   @GetMapping("/{id}")
-  public Delivery getDeliveryWithoutDrone(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.getDeliveryById(deliveryId, false);
+  public Delivery getDeliveryById(@PathVariable("id") Integer deliveryId) {
+    return deliveryService.getDeliveryById(deliveryId);
   }
 
   /**
@@ -86,34 +81,21 @@ public class DeliveryController {
    * Rota para alterar um pedido de entrega.
    * 
    */
-  @PutMapping("/{id}/drone")
-  public MessageResult updateDeliveryWithDrone(
-      @PathVariable("id") Integer deliveryId,
-      @RequestBody SavedDeliveryDto savedDeliveryDto
-  ) {
-    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto, true);
-  }
-
   @PutMapping("/{id}")
-  public MessageResult updateDeliveryWithoutDrone(
+  public MessageResult updateDelivery(
       @PathVariable("id") Integer deliveryId,
       @RequestBody SavedDeliveryDto savedDeliveryDto
   ) {
-    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto, false);
+    return deliveryService.updateDelivery(deliveryId, savedDeliveryDto);
   }
 
   /**
    * Rota para cancelar um pedido de entrega.
    * 
    */
-  @DeleteMapping("/{id}/drone")
-  public MessageResult deleteDelivery(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.deleteDelivery(deliveryId, true);
-  }
-
   @DeleteMapping("/{id}")
-  public MessageResult deleteDeliveryWithoutDrone(@PathVariable("id") Integer deliveryId) {
-    return deliveryService.deleteDelivery(deliveryId, false);
+  public MessageResult deleteDelivery(@PathVariable("id") Integer deliveryId) {
+    return deliveryService.deleteDelivery(deliveryId);
   }
 
 }
