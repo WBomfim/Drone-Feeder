@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+
+  application:
+    container_name: app-drone-feeder
+    build: .
+    restart: always
+    ports:
+      - 8080:8080
+    environment:
+      MYSQL_HOST: db-drone-feeder
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: Drone_Feeder
+    depends_on:
+      - mysql_db
+
+  mysql_db:
+    container_name: db-drone-feeder
+    image: mysql:8.0
+    volumes:
+      - mysql-db:/var/lib/mysql
+      - ./init-mysql.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+
+volumes:
+  mysql-db:
