@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public interface DeliveryPersistence {
 
-  void saveDelivery(Delivery delivery);
+  Delivery saveDelivery(Delivery delivery);
 
   void updateDelivery(Delivery delivery);
 

@@ -45,21 +45,7 @@ public class DeliveryService {
   @Autowired
   private VideoDao videoDao;
 
-  private Drone selectNextDrone() {
-    List<Drone> drones = droneDao.getDronesByStatus(DroneStatus.WAITING.toString());
-    if (drones.size() > 0) {
-      return drones.get(0);
-    }
-    return null;
-  }
-
-  /**
-   * Method to save a delivery.
-   * 
-   */
-  @Transactional
-  public MessageResult saveDelivery(SavedDeliveryDto savedDeliveryDto) {
-
+  private void validateSavedDeliveryDto(SavedDeliveryDto savedDeliveryDto) {
     if (savedDeliveryDto.getClientId() == null) {
       throw new IllegalArgumentException("Client_id is required");
     }
@@ -69,27 +55,21 @@ public class DeliveryService {
         || savedDeliveryDto.getDeliveryAddress() == null
         || savedDeliveryDto.getDeliveryAddress().isEmpty()
     ) {
-      throw new IllegalArgumentException("Adresses is required");
+      throw new IllegalArgumentException("Invalid delivery data");
     }
+  }
 
+  private Drone selectNextDrone() {
+    List<Drone> drones = droneDao.getDronesByStatus(DroneStatus.WAITING.toString());
+    if (drones.size() > 0) {
+      return drones.get(0);
+    }
+    return null;
+  }
+
+  private Delivery createDelivery(SavedDeliveryDto savedDeliveryDto, Drone drone) {
     Client client = clientDao.getClientById(savedDeliveryDto.getClientId())
         .orElseThrow(() -> new NotFoundException("Client not found"));
-    
-    Drone drone = this.selectNextDrone();
-
-    if (drone == null) {
-      WaitingList waitingList = new WaitingList();
-      waitingList.setClientId(client);
-      waitingList.setRequestDate(LocalDateTime.now());
-      waitingList.setWithdrawalAddress(savedDeliveryDto.getWithdrawalAddress());
-      waitingList.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
-      waitingList.setStatus(DeliveryStatus.PENDING.toString());
-      
-      waitingListDao.saveDelivery(waitingList);
-      return new MessageResult("Order received successfully");
-    }
-
-    drone.setStatus(DroneStatus.OPERATING.toString());
 
     Delivery delivery = new Delivery();
     delivery.setClientId(client);
@@ -99,7 +79,38 @@ public class DeliveryService {
     delivery.setDeliveryAddress(savedDeliveryDto.getDeliveryAddress());
     delivery.setStatus(DeliveryStatus.PENDING.toString());
 
-    deliveryDao.saveDelivery(delivery);
+    return deliveryDao.saveDelivery(delivery);
+  }
+
+  private void addDeliveryToWaitingList(Delivery newDelivery) {
+    WaitingList waitingList = new WaitingList();
+    waitingList.setDeliveryId(newDelivery.getId());
+    waitingList.setWithdrawalAddress(newDelivery.getWithdrawalAddress());
+    waitingList.setDeliveryAddress(newDelivery.getDeliveryAddress());
+    waitingListDao.saveDelivery(waitingList);
+  }
+
+  /**
+   * Method to save a delivery.
+   * 
+   */
+  @Transactional
+  public MessageResult saveDelivery(SavedDeliveryDto savedDeliveryDto) {
+
+    this.validateSavedDeliveryDto(savedDeliveryDto);
+    
+    Drone drone = this.selectNextDrone();
+
+    if (drone != null) {
+      drone.setStatus(DroneStatus.OPERATING.toString());
+      this.createDelivery(savedDeliveryDto, drone);
+      return new MessageResult("Order received successfully");
+    }
+
+    Delivery newDelivery = this.createDelivery(savedDeliveryDto, null);
+
+    this.addDeliveryToWaitingList(newDelivery);
+
     return new MessageResult("Order received successfully");
   }
 

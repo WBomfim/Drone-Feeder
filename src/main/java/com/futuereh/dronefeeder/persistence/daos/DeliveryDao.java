@@ -8,20 +8,20 @@ import com.futuereh.dronefeeder.persistence.repositories.DeliveryRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * Class DeliveryDao.
  * 
  */
-@Component
+@Repository
 public class DeliveryDao implements DeliveryPersistence {
   
   @Autowired
   private DeliveryRepository deliveryRepository;
 
-  public void saveDelivery(Delivery delivery) {
-    deliveryRepository.save(delivery);
+  public Delivery saveDelivery(Delivery delivery) {
+    return deliveryRepository.save(delivery);
   }
 
   public void updateDelivery(Delivery delivery) {

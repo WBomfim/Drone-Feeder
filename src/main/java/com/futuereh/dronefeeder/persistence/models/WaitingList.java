@@ -1,13 +1,10 @@
 package com.futuereh.dronefeeder.persistence.models;
 
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,12 +19,7 @@ public class WaitingList {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  @ManyToOne
-  @JoinColumn(name = "client_id")
-  private Client clientId;
-
-  @Column(name = "request_date")
-  private LocalDateTime requestDate;
+  private int deliveryId;
 
   @Column(name = "withdrawal_address")
   private String withdrawalAddress;
@@ -35,27 +27,16 @@ public class WaitingList {
   @Column(name = "delivery_address")
   private String deliveryAddress;
 
-  @Column
-  private String status;
-
   public int getId() {
     return id;
   }
 
-  public Client getClientId() {
-    return clientId;
+  public int getDeliveryId() {
+    return deliveryId;
   }
 
-  public void setClientId(Client clientId) {
-    this.clientId = clientId;
-  }
-
-  public LocalDateTime getRequestDate() {
-    return requestDate;
-  }
-
-  public void setRequestDate(LocalDateTime requestDate) {
-    this.requestDate = requestDate;
+  public void setDeliveryId(int deliveryId) {
+    this.deliveryId = deliveryId;
   }
 
   public String getWithdrawalAddress() {
@@ -72,14 +53,6 @@ public class WaitingList {
 
   public void setDeliveryAddress(String deliveryAddress) {
     this.deliveryAddress = deliveryAddress;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
   }
   
 }
