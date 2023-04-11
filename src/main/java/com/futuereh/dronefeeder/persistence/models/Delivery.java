@@ -1,5 +1,6 @@
 package com.futuereh.dronefeeder.persistence.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,10 +25,12 @@ public class Delivery {
 
   @ManyToOne
   @JoinColumn(name = "client_id")
+  @JsonIgnoreProperties({"password"})
   private Client clientId;
 
   @ManyToOne
   @JoinColumn(name = "drone_id")
+  @JsonIgnoreProperties({"status"})
   private Drone droneId;
 
   @Column(name = "request_date")
