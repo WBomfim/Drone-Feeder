@@ -19,6 +19,7 @@ public class WaitingList {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
+  @Column(name = "delivery_id")
   private int deliveryId;
 
   @Column(name = "withdrawal_address")
