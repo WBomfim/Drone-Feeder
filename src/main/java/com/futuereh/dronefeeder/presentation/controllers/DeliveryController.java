@@ -4,16 +4,12 @@ import com.futuereh.dronefeeder.application.dtos.SavedDeliveryDto;
 import com.futuereh.dronefeeder.application.results.MessageResult;
 import com.futuereh.dronefeeder.application.services.DeliveryService;
 import com.futuereh.dronefeeder.persistence.models.Delivery;
-import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
