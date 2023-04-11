@@ -8,6 +8,10 @@ import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,15 +66,21 @@ public class DeliveryController {
    * 
    */
   @GetMapping("/video/{id}")
-  public InputStreamResource getDeliveryVideo(@PathVariable("id") Integer deliveryId)
+  public void getDeliveryVideo(@PathVariable("id") Integer deliveryId, HttpServletResponse response)
       throws Exception {
     try {
       Blob videoBlob = deliveryService.getDeliveryVideo(deliveryId);
-      InputStream videoStream = videoBlob.getBinaryStream();
+      
+      byte[] videoBytes = videoBlob.getBytes(1, (int) videoBlob.length());
 
-      InputStreamResource videoResource = new InputStreamResource(videoStream);
+      response.setContentType("video/mp4");
+      response.setContentLength(videoBytes.length);
+      response.setHeader("Content-Disposition", "attachment; filename=\"video.mp4\"");
 
-      return videoResource;
+      ServletOutputStream outputStream = response.getOutputStream();
+      outputStream.write(videoBytes);
+      outputStream.flush();
+      outputStream.close();
 
     } catch (SQLException e) {
       throw new Exception();
