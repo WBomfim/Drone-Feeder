@@ -4,8 +4,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.futuereh.dronefeeder.application.dtos.SavedDeliveryDto;
 import com.futuereh.dronefeeder.persistence.models.Client;
@@ -16,6 +14,7 @@ import com.futuereh.dronefeeder.persistence.repositories.ClientRepository;
 import com.futuereh.dronefeeder.persistence.repositories.DeliveryRepository;
 import com.futuereh.dronefeeder.persistence.repositories.DroneRepository;
 import com.futuereh.dronefeeder.persistence.repositories.WaitingListRepository;
+import java.util.List;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -58,13 +57,13 @@ public class DeliveryTest {
     droneRepository.save(drone);
 
     Client client = new Client();
-    client.setName("client1");
-    client.setPassword("password1");
-    clientRepository.save(client);
+    client.setName("client100");
+    client.setPassword("password100");
+    Client clientSalved = clientRepository.save(client);
 
 
     SavedDeliveryDto delivery = new SavedDeliveryDto();
-    delivery.setClientId(1);
+    delivery.setClientId(clientSalved.getId());
     delivery.setWithdrawalAddress("Withdrawal Address");
     delivery.setDeliveryAddress("Delivery Address");
 
@@ -87,8 +86,13 @@ public class DeliveryTest {
   @Test
   @Order(2)
   public void createDeliveryWithoutDroneAvailable() throws Exception {
+    Client client = new Client();
+    client.setName("client101");
+    client.setPassword("password101");
+    Client clientSalved = clientRepository.save(client);
+
     SavedDeliveryDto delivery = new SavedDeliveryDto();
-    delivery.setClientId(1);
+    delivery.setClientId(clientSalved.getId());
     delivery.setWithdrawalAddress("Withdrawal Address");
     delivery.setDeliveryAddress("Delivery Address");
 

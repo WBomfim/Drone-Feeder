@@ -32,8 +32,8 @@ public class ClientTest {
   @Order(1)
   public void createClient() throws Exception {
     Client client = new Client();
-    client.setName("client1");
-    client.setPassword("password1");
+    client.setName("client10");
+    client.setPassword("password10");
 
     mockMvc
       .perform(
@@ -49,7 +49,7 @@ public class ClientTest {
   @Order(2)
   public void createClientExisting() throws Exception {
     Client client = new Client();
-    client.setName("client1");
+    client.setName("client10");
     client.setPassword("ClientTest123");
 
     mockMvc

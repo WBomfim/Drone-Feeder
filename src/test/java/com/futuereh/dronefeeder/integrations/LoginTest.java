@@ -71,7 +71,6 @@ public class LoginTest {
           .content(new ObjectMapper().writeValueAsString(client))
       )
         .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
-        .andExpect(jsonPath("$.id").value("1"))
         .andExpect(jsonPath("$.name").value("client1"));
   }
 
