@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.futuereh.dronefeeder.persistence.daos.ClientDao;
 import com.futuereh.dronefeeder.persistence.models.Client;
 import com.futuereh.dronefeeder.persistence.repositories.ClientRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -31,9 +30,6 @@ import org.springframework.test.web.servlet.MockMvc;
 public class LoginTest {
 
   @Autowired
-  private ClientDao clientDao;
-
-  @Autowired
   private ClientRepository clientRepository;
 
   @Autowired
@@ -49,7 +45,7 @@ public class LoginTest {
     client.setName("client1");
     client.setPassword("password1");
 
-    clientDao.saveClient(client);
+    clientRepository.save(client);
   }
 
   /**
