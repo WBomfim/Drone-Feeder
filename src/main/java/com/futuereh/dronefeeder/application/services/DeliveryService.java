@@ -55,7 +55,7 @@ public class DeliveryService {
         || savedDeliveryDto.getDeliveryAddress() == null
         || savedDeliveryDto.getDeliveryAddress().isEmpty()
     ) {
-      throw new IllegalArgumentException("Invalid delivery data");
+      throw new IllegalArgumentException("Adresses is required");
     }
   }
 
