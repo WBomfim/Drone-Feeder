@@ -16,12 +16,24 @@ public class SavedDeliveryDto {
     return clientId;
   }
 
+  public void setClientId(Integer clientId) {
+    this.clientId = clientId;
+  }
+
   public String getWithdrawalAddress() {
     return withdrawalAddress;
   }
 
+  public void setWithdrawalAddress(String withdrawalAddress) {
+    this.withdrawalAddress = withdrawalAddress;
+  }
+
   public String getDeliveryAddress() {
     return deliveryAddress;
+  }
+
+  public void setDeliveryAddress(String deliveryAddress) {
+    this.deliveryAddress = deliveryAddress;
   }
   
 }
